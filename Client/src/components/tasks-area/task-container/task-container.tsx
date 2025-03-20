@@ -17,7 +17,7 @@ export const TaskContainer: React.FC<ITaskContainerProps> = ({ sortBy }) => {
   const { sortedTasks } = useSortedTasks(tasks, sortBy);
 
   if (loading) return <p>Загрузка...</p>;
-  if (!sortedTasks.length) return <p>Нет задач</p>;
+  if (sortedTasks.length === 0) return <p>Нет задач</p>;
 
   return (
     <div className={b('container')}>

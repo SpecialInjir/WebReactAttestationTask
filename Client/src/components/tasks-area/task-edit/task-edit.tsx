@@ -5,22 +5,27 @@ import { ITask } from 'src/types/task';
 
 import { useTaskContext } from '../../../context/task-context';
 
-import './task-edit.css';
 import { TaskEditForm } from './task-edit-form';
+import './task-edit.css';
 
 const b = block('task-edit');
 
 export const TaskEdit: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>(); // Тип строго указан
   const { tasks, loading, handleUpdateTask } = useTaskContext();
 
-  const taskId = parseInt(id || '', 10);
-  const task = tasks.find((t) => t.id === taskId) || null;
+  const taskId = id !== undefined ? parseInt(id, 10) : NaN;
+
+  if (isNaN(taskId)) {
+    return <div className={b('error')}>Неверный ID задачи</div>;
+  }
+
+  const task = tasks.find((t) => t.id === taskId);
 
   const handleSave = async (updatedTask: ITask) => {
-    await handleUpdateTask(updatedTask.id, updatedTask);
-    navigate('/');
+      await handleUpdateTask(updatedTask.id, updatedTask);
+      navigate('/');
   };
 
   const handleBack = () => {
@@ -28,8 +33,7 @@ export const TaskEdit: React.FC = () => {
   };
 
   if (loading) return <div className={b('loading')}>Загрузка...</div>;
-  if (isNaN(taskId)) return <div className={b('error')}>Неверный ID задачи</div>;
-  if (!task) return <div className={b('error')}>Задача не найдена</div>;
+  if (task === undefined) return <div className={b('error')}>Задача не найдена</div>;
 
   return (
     <div className={b()}>
@@ -37,7 +41,7 @@ export const TaskEdit: React.FC = () => {
       <button className={b('button', { back: true })} onClick={handleBack}>
         Вернуться в список
       </button>
-      <TaskEditForm task={task!} onSave={handleSave} />
+      <TaskEditForm task={task} onSave={handleSave} />
     </div>
   );
 };
