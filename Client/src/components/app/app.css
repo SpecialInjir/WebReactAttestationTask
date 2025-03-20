@@ -1,0 +1,13 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .app {
+    height: 100vh;
+    display: flex;
+    background-color: #f8f9fa;
+    flex-direction: column;
+  }
