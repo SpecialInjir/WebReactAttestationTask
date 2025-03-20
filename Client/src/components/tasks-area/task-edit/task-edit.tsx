@@ -12,7 +12,7 @@ const b = block('task-edit');
 
 export const TaskEdit: React.FC = () => {
   const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>(); // Тип строго указан
+  const { id } = useParams<{ id: string }>();
   const { tasks, loading, handleUpdateTask } = useTaskContext();
 
   const taskId = id !== undefined ? parseInt(id, 10) : NaN;
