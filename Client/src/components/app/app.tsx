@@ -9,8 +9,8 @@ import './app.css';
 
 export const App: React.FC = () => (
   <TaskProvider>
-  <Router>
-    <div className='app'>
+    <Router>
+      <div className='app'>
         <Suspense fallback={<div>Загрузка...</div>}>
           <Routes>
             <Route path='/' element={<TaskList />} />
@@ -20,6 +20,6 @@ export const App: React.FC = () => (
           </Routes>
         </Suspense>
       </div>
-  </Router>
+    </Router>
   </TaskProvider>
 );

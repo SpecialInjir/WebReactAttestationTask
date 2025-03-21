@@ -9,7 +9,7 @@ const b = block('task-add-form');
 
 export const TaskAddForm: React.FC = () => {
   const { handleAddTask } = useTaskContext();
-  const [formData, setFormData] = useState({ text: '', important: false });
+  const [ formData, setFormData ] = useState({ text: '', important: false });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

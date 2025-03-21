@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { ITask } from '../types/task';
 import { addTask, deleteTask, fetchTasks, updateTask } from '../api/api';
@@ -15,38 +15,30 @@ interface ITaskContext {
 
 const TaskContext = createContext<ITaskContext | undefined>(undefined);
 
-interface ITaskProviderProps {
-  children: ReactNode;
-}
-
-export const TaskProvider: React.FC<ITaskProviderProps> = ({ children }) => {
-  const [tasks, setTasks] = useState<Array<ITask>>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [ tasks, setTasks ] = useState<Array<ITask>>([]);
+  const [ loading, setLoading ] = useState(false);
+  const [ error, setError ] = useState<string | null>(null);
 
   const withLoading = async (operation: () => Promise<void>, errorMessage: string) => {
-    setLoading(true);
-    setError(null);
     try {
+      setLoading(true);
+      setError(null);
       await operation();
-    } catch (err) {
+    }
+    catch (err) {
       setError(errorMessage);
-    } finally {
+    }
+    finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    const loadTasks = async () => {
-      await withLoading(
-        async () => {
-          const fetchedTasks = await fetchTasks();
-          setTasks(fetchedTasks);
-        },
-        'Не удалось загрузить задачи.'
-      );
-    };
-    loadTasks();
+    withLoading(
+      async () => setTasks(await fetchTasks()),
+      'Не удалось загрузить задачи.'
+    );
   }, []);
 
   const handleAddTask = async (text: string, important: boolean) => {
@@ -54,20 +46,18 @@ export const TaskProvider: React.FC<ITaskProviderProps> = ({ children }) => {
       setError('Текст задачи не может быть пустым.');
       return;
     }
-    await withLoading(
-      async () => {
-        const newTask = await addTask(text, important);
-        setTasks((prevTasks) => [...prevTasks, newTask]);
-      },
-      'Не удалось добавить задачу.'
-    );
+
+    await withLoading(async () => {
+      const newTask = await addTask(text, important);
+      setTasks((prev) => [ ...prev, newTask ]);
+    }, 'Не удалось добавить задачу.');
   };
 
   const handleDeleteTask = async (id: number) => {
     await withLoading(
       async () => {
         await deleteTask(id);
-        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+        setTasks((prev) => prev.filter((task) => task.id !== id));
       },
       'Не удалось удалить задачу.'
     );
@@ -82,7 +72,7 @@ export const TaskProvider: React.FC<ITaskProviderProps> = ({ children }) => {
     await withLoading(
       async () => {
         const updatedTask = await updateTask(id, { ...task, completed: !task.completed });
-        setTasks((prevTasks) => prevTasks.map((t) => (t.id === id ? updatedTask : t)));
+        setTasks((prev) => prev.map((t) => (t.id === id ? updatedTask : t)));
       },
       'Не удалось обновить статус задачи.'
     );
@@ -96,7 +86,7 @@ export const TaskProvider: React.FC<ITaskProviderProps> = ({ children }) => {
     await withLoading(
       async () => {
         const updatedTask = await updateTask(id, task);
-        setTasks((prevTasks) => prevTasks.map((t) => (t.id === id ? updatedTask : t)));
+        setTasks((prev) => prev.map((t) => (t.id === id ? updatedTask : t)));
       },
       'Не удалось обновить задачу.'
     );
@@ -117,6 +107,6 @@ export const TaskProvider: React.FC<ITaskProviderProps> = ({ children }) => {
 
 export const useTaskContext = (): ITaskContext => {
   const context = useContext(TaskContext);
-  if (context === undefined) throw new Error('Использовать useTaskContext необходимо в рамках TaskProvider');
+  if (context === undefined) throw new Error('useTaskContext должен использоваться в рамках  TaskProvider');
   return context;
 };

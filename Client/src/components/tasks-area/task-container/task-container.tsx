@@ -8,6 +8,7 @@ import { useSortedTasks } from '../../../hooks/use-sorted-tasks';
 import './task-container.css';
 
 const b = block('task-container');
+
 interface ITaskContainerProps {
   sortBy?: 'importance' | 'completed';
 }

@@ -27,7 +27,8 @@ export const TaskCard = memo<ITaskCardProps>(({ task, index }) => {
     e.stopPropagation();
     try {
       await handleDeleteTask(task.id);
-    } catch (error) {
+    }
+    catch (error) {
       alert('Не удалось удалить задачу.');
     }
   };

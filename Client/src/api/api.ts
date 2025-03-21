@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { ITask } from 'src/types/task';
+
+import { ITask } from '../types/task';
 
 const API_URL = 'api/tasks';
 

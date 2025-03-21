@@ -21,7 +21,7 @@ export const TaskList: React.FC<ITaskListProps> = ({ sortBy }) => {
       </div>
       <div className={b('content')}>
         <div className={b('main-panel')}>
-         <TaskContainer sortBy={sortBy} />
+          <TaskContainer sortBy={sortBy} />
         </div>
         <div className={b('right-panel')}>
           <SortPanel />

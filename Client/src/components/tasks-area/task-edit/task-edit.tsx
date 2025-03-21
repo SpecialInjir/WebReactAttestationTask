@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import block from 'bem-cn-lite';
-import { ITask } from 'src/types/task';
 
+import { ITask } from '../../../types/task';
 import { useTaskContext } from '../../../context/task-context';
 
 import { TaskEditForm } from './task-edit-form';
@@ -24,8 +24,8 @@ export const TaskEdit: React.FC = () => {
   const task = tasks.find((t) => t.id === taskId);
 
   const handleSave = async (updatedTask: ITask) => {
-      await handleUpdateTask(updatedTask.id, updatedTask);
-      navigate('/');
+    await handleUpdateTask(updatedTask.id, updatedTask);
+    navigate('/');
   };
 
   const handleBack = () => {

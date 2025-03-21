@@ -11,7 +11,7 @@ interface ITaskEditFormProps {
 }
 
 export const TaskEditForm: React.FC<ITaskEditFormProps> = ({ task, onSave }) => {
-  const [localTask, setLocalTask] = useState(task);
+  const [ localTask, setLocalTask ] = useState(task);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, checked, type } = e.target;
@@ -40,6 +40,7 @@ export const TaskEditForm: React.FC<ITaskEditFormProps> = ({ task, onSave }) => 
           value={localTask.text}
           onChange={handleChange}
           placeholder='Введите текст задачи'
+          required={true}
         />
       </div>
       <div className={b('field')}>

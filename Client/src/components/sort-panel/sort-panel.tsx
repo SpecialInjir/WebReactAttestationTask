@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 import block from 'bem-cn-lite';
+
 import './sort-panel.css';
 
 const b = block('sort-panel');
